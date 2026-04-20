@@ -26,7 +26,16 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const getAi = () => {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) {
+    console.warn("GEMINI_API_KEY is missing. AI Smart Planner will be disabled.");
+    return null;
+  }
+  return new GoogleGenAI({ apiKey: key });
+};
+
+const ai = getAi();
 
 export default function SchedulePlanner() {
   const [selectedDay, setSelectedDay] = useState(1);
@@ -65,7 +74,10 @@ export default function SchedulePlanner() {
   const mySessionsForDay = SESSIONS.filter(s => s.day === selectedDay && mySchedule.includes(s.id));
 
   const handleAiPlan = async () => {
-    if (!aiPrompt.trim()) return;
+    if (!aiPrompt.trim() || !ai) {
+      if (!ai) alert("AI Planning is disabled because the GEMINI_API_KEY is not configured.");
+      return;
+    }
     setAiLoading(true);
     try {
       const response = await ai.models.generateContent({
