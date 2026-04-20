@@ -279,10 +279,14 @@ export default function SchedulePlanner() {
 
       {/* Session Detail Dialog */}
       <Dialog open={!!activeSession} onOpenChange={(open) => !open && setActiveSession(null)}>
-        <DialogContent className="rounded-none border-[#141414] bg-[#E4E3E0] max-w-2xl p-0 overflow-hidden">
+        <DialogContent 
+          className="rounded-none border-[#141414] bg-[#E4E3E0] max-w-2xl p-0 overflow-hidden max-h-[90vh] flex flex-col"
+          showCloseButton={false}
+        >
           {activeSession && (
-            <div className="flex flex-col">
-              <div className="bg-[#141414] text-[#E4E3E0] p-8">
+            <div className="flex flex-col overflow-y-auto">
+              {/* Header - Stays at top sticky */}
+              <div className="bg-[#141414] text-[#E4E3E0] p-8 sticky top-0 z-10">
                 <div className="flex justify-between items-start mb-4">
                   <Badge className="rounded-none bg-[#E4E3E0] text-[#141414] font-mono text-[10px] uppercase">
                     {activeSession.track}
