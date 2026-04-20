@@ -25,6 +25,7 @@ import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { GoogleGenAI } from "@google/genai";
+import { cn } from "@/lib/utils";
 
 const getAi = () => {
   const key = process.env.GEMINI_API_KEY;
@@ -150,9 +151,13 @@ export default function SchedulePlanner() {
                 {DAYS.map(day => (
                   <Button
                     key={day.id}
-                    variant="outline"
                     onClick={() => setSelectedDay(day.id)}
-                    className={`rounded-none border-[#141414] font-mono text-[10px] md:text-xs uppercase px-3 md:px-4 h-8 md:h-9 flex-shrink-0 ${selectedDay === day.id ? 'bg-[#141414] text-[#E4E3E0]' : 'hover:bg-[#141414] hover:text-[#E4E3E0]'}`}
+                    className={cn(
+                      "rounded-none border border-[#141414] font-mono text-[10px] md:text-xs uppercase px-3 md:px-4 h-8 md:h-9 flex-shrink-0 transition-colors duration-150",
+                      selectedDay === day.id 
+                        ? "bg-[#141414] text-[#E4E3E0] hover:bg-[#141414] hover:text-[#E4E3E0]" 
+                        : "bg-transparent text-[#141414] hover:bg-[#141414] hover:text-[#E4E3E0]"
+                    )}
                   >
                     {day.label}
                   </Button>
